@@ -1,7 +1,7 @@
-const express = require('express');
-const questions = require('../../data/questions.json');
+const express = require('express')
+const questions = require('../../data/questions.json')
 
-const router = express.Router();
+const router = express.Router()
 
 /**
  * @api {get} api/trivia/all Get all questions
@@ -35,11 +35,11 @@ const router = express.Router();
  *     ]
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://api.reinvent-trivia.com/api/trivia/all
+ *     curl -i https://trivia-api.weijing329.studio/api/trivia/all
  */
 router.get('/all', function(req, res, next) {
-  res.send(questions);
-});
+  res.send(questions)
+})
 
 /**
  * @api {get} api/trivia/question/:id Request question
@@ -74,29 +74,29 @@ router.get('/all', function(req, res, next) {
  *     }
  *
  * @apiExample {curl} Example usage:
- *     curl -i https://api.reinvent-trivia.com/api/trivia/question/1
+ *     curl -i https://trivia-api.weijing329.studio/api/trivia/question/1
  */
 router.get('/question/:question_id', function(req, res, next) {
-  var id = req.params.question_id;
+  var id = req.params.question_id
 
-  var foundQuestion;
+  var foundQuestion
   questions.forEach(function(category) {
     category.questions.forEach(function(question) {
-        if (question.id == id) {
-          foundQuestion = question;
-          foundQuestion.category = category.category;
-        }
-    });
-  });
+      if (question.id == id) {
+        foundQuestion = question
+        foundQuestion.category = category.category
+      }
+    })
+  })
 
   if (foundQuestion) {
-    res.json(foundQuestion);
+    res.json(foundQuestion)
   } else {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    var err = new Error('Not Found')
+    err.status = 404
+    next(err)
   }
-});
+})
 
 /**
  * @api {post} api/trivia/question/:id Answer question
@@ -130,33 +130,33 @@ router.get('/question/:question_id', function(req, res, next) {
  * @apiExample {curl} Example usage:
  *     curl -H "Content-Type: application/json" \
  *          -d "{'answer' : 'Broomball'}" \
- *          -X POST https://api.reinvent-trivia.com/api/trivia/question/1
+ *          -X POST https://trivia-api.weijing329.studio/api/trivia/question/1
  */
 router.post('/question/:question_id', function(req, res, next) {
-  var id = req.params.question_id;
-  var answer = req.body.answer;
+  var id = req.params.question_id
+  var answer = req.body.answer
 
-  var foundQuestion;
+  var foundQuestion
   questions.forEach(function(category) {
     category.questions.forEach(function(question) {
-        if (question.id == id) {
-          foundQuestion = question;
-        }
-    });
-  });
+      if (question.id == id) {
+        foundQuestion = question
+      }
+    })
+  })
 
   if (foundQuestion) {
     if (foundQuestion.answerType == 'NUMBER' && typeof answer === 'string') {
-      answer = parseInt(answer, 10);
+      answer = parseInt(answer, 10)
     }
 
-    var isCorrect = (foundQuestion.answer == answer);
-    res.json({ "result" : isCorrect, "id": id });
+    var isCorrect = foundQuestion.answer == answer
+    res.json({ result: isCorrect, id: id })
   } else {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    var err = new Error('Not Found')
+    err.status = 404
+    next(err)
   }
-});
+})
 
-module.exports = router;
+module.exports = router

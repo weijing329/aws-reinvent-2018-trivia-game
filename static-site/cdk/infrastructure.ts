@@ -20,11 +20,11 @@ class TriviaGameInfrastructureStack extends cdk.Stack {
 
 const app = new cdk.App();
 new TriviaGameInfrastructureStack(app, 'TriviaGameStaticSiteInfraTest', {
-    domainName: 'reinvent-trivia.com',
-    siteSubDomain: 'test'
+    domainName: 'weijing329.studio',
+    siteSubDomain: 'trivia-test'
 });
 new TriviaGameInfrastructureStack(app, 'TriviaGameStaticSiteInfraProd', {
-    domainName: 'reinvent-trivia.com', 
-    siteSubDomain: 'www'
+    domainName: 'weijing329.studio', 
+    siteSubDomain: 'trivia'
 });
 app.run();
