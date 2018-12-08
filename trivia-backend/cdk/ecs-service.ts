@@ -18,6 +18,7 @@ import cdk = require('@aws-cdk/cdk');
 interface TriviaBackendStackProps extends cdk.StackProps {
   domainName: string;
   domainZone: string;
+  runningTasksCount: number;
 }
 
 class TriviaBackendStack extends cdk.Stack {
@@ -40,7 +41,7 @@ class TriviaBackendStack extends cdk.Stack {
     const service = new LoadBalancedFargateService(this, 'Service', {
       cluster,
       image,
-      desiredCount: 3,
+      desiredCount: props.runningTasksCount,
       domainName: props.domainName,
       domainZone,
       certificate
@@ -96,10 +97,12 @@ class TriviaBackendStack extends cdk.Stack {
 const app = new cdk.App();
 new TriviaBackendStack(app, 'TriviaBackendTest', {
   domainName: 'trivia-api-test.weijing329.studio',
-  domainZone: 'weijing329.studio'
+  domainZone: 'weijing329.studio',
+  runningTasksCount: 0
 });
 new TriviaBackendStack(app, 'TriviaBackendProd', {
   domainName: 'trivia-api.weijing329.studio',
-  domainZone: 'weijing329.studio'
+  domainZone: 'weijing329.studio',
+  runningTasksCount: 1
 });
 app.run();
